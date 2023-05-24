@@ -1,4 +1,7 @@
-  # Pokémon type classification
+# Pokémon type classification'
+
+*Available at: https://github.com/AddiH/Cultural_Data_Science/tree/main/Visual/04_pokemon_classification*
+
 ## Intro
 Welcome to the GitHub repository for the Pokémon Type Predictor! Have you ever wondered if you could predict the type of a Pokémon just by looking at its picture? Well, this repository houses a neural network that attempts precisely that. While Pokémon enthusiasts might find this task relatively easy the questions is whether a machine can predict the types based on nothing but the looks of the pokemon.
 
@@ -16,7 +19,7 @@ This repository aims to showcase three main aspects of the project:
 
 ## How to run
 
-To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AddiH/pokemon/blob/88a09a7d45dab87f74ccf3d8c57753d1262899e8/setup.sh#L2) and [line 3](https://github.com/AddiH/pokemon/blob/88a09a7d45dab87f74ccf3d8c57753d1262899e8/setup.sh#L3). Additionally pip is upgraded in [line 12](https://github.com/AddiH/pokemon/blob/62af1522cb7199d8b7a78196ce50b363534b0aa9/setup.sh#L12). Remember to modify this to suit your needs.
+To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AddiH/Cultural_Data_Science/blob/4fb33d2ce2c053b8ffa67bf6ef7a00dbcd89ec4d/Visual/04_pokemon_classification/setup.sh#L2) and [line 3](https://github.com/AddiH/Cultural_Data_Science/blob/4fb33d2ce2c053b8ffa67bf6ef7a00dbcd89ec4d/Visual/04_pokemon_classification/setup.sh#L3). Additionally pip is upgraded in [line 12]([https://github.com/AddiH/pokemon/blob/62af1522cb7199d8b7a78196ce50b363534b0aa9/setup.sh#L12](https://github.com/AddiH/Cultural_Data_Science/blob/4fb33d2ce2c053b8ffa67bf6ef7a00dbcd89ec4d/Visual/04_pokemon_classification/setup.sh#L12)). Remember to modify this to suit your needs.
 
 ### Get kaggle datasets
 This code downloads data through the kaggle API. You need to sign up to [kaggle.com](https://www.kaggle.com/) and though your account, download your personal token - a json file. If you are unsure of how to do this, you can read kaggle's description below:
@@ -74,8 +77,8 @@ The trained model is located in results/model/. In results/plots/ you will find 
 
 # Customising
 If you want to try out different model parameters, you have a couple options. 
-- The test data is the newest generation of pokemon (8), but you can choose a different train/val split In [prepare.py](https://github.com/AddiH/pokemon/blob/88a09a7d45dab87f74ccf3d8c57753d1262899e8/src/prepare.py#L20). I have chosen 70/30 as the dataset is quite small, and with a too small validation set overfitting can easily occur.
-- The train.py script has a couple options to change the model and training process. However, this should all be done through [run.sh](https://github.com/AddiH/pokemon/blob/main/run.sh) with flags, to ensure the code is run in the correct environment. You can run [line 18](https://github.com/AddiH/pokemon/blob/0fbce125695a633f4904647f1c4a01f9da73bdbe/run.sh#L18) of run.sh to get information on what each argument changes. 
+- The test data is the newest generation of pokemon (8), but you can choose a different train/val split In [setup.sh](https://github.com/AddiH/Cultural_Data_Science/blob/4fb33d2ce2c053b8ffa67bf6ef7a00dbcd89ec4d/Visual/04_pokemon_classification/setup.sh#L19). I have chosen 70/30 as the dataset is quite small, and with a too small validation set overfitting can easily occur.
+- The train.py script has a couple options to change the model and training process. However, this should all be done through [run.sh](https://github.com/AddiH/Cultural_Data_Science/blob/main/Visual/04_pokemon_classification/run.sh) with flags, to ensure the code is run in the correct environment. You can run [line 18](https://github.com/AddiH/Cultural_Data_Science/blob/4fb33d2ce2c053b8ffa67bf6ef7a00dbcd89ec4d/Visual/04_pokemon_classification/run.sh#L18) of run.sh to get information on what each argument changes. 
 Remember: you only need to run setup.sh once, but you can execute run.sh as many times as you wish, customising the code to find the best model. Also note that the flags for plot.py should be identical to those for train.py - but this should be clear when looking though the code.
 
 ## Evaluation
