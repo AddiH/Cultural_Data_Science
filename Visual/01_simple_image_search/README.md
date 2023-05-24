@@ -1,5 +1,7 @@
 # Simple image search using colour histograms
+
 *Available at : https://github.com/AddiH/Cultural_Data_Science/tree/main/Visual/01_simple_image_search*
+
 ## Intro
 Welcome to this repository for the Image Search Algorithm assignment. Here, you will find my implementation of a simple image search algorithm using OpenCV.
 The dataset used in this assignment comprises over 1000 images of flowers, representing 17 different species. These images were sourced from the Visual Geometry Group at the University of Oxford, providing a diverse collection to work with. You can find more information on the dataset [here](https://www.robots.ox.ac.uk/~vgg/data/flowers/17/).
