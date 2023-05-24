@@ -1,0 +1,24 @@
+              precision    recall  f1-score   support
+
+         bug       0.21      0.43      0.29         7
+        dark       0.27      0.18      0.21        17
+      dragon       0.27      0.38      0.32         8
+    electric       0.00      0.00      0.00        15
+       fairy       0.00      0.00      0.00         6
+    fighting       0.33      0.12      0.18        16
+        fire       0.18      0.29      0.22        14
+      flying       0.00      0.00      0.00        10
+       ghost       0.00      0.00      0.00         8
+       grass       0.62      0.62      0.62        21
+      ground       0.00      0.00      0.00         7
+         ice       0.12      0.09      0.11        11
+      normal       0.12      0.33      0.17         9
+      poison       0.00      0.00      0.00         3
+     psychic       0.18      0.14      0.16        14
+        rock       0.29      0.40      0.33        10
+       steel       0.00      0.00      0.00        10
+       water       0.23      0.32      0.27        22
+
+    accuracy                           0.22       208
+   macro avg       0.16      0.18      0.16       208
+weighted avg       0.20      0.22      0.20       208
