@@ -1,4 +1,7 @@
 # Simple image classification
+
+*Available at: https://github.com/AddiH/Cultural_Data_Science/tree/main/Visual/02_image_classification*
+
 ## Intro
 Within this repository you will find two machine learning algorithm that attempts to classify pictures from the [cifar-10](https://www.cs.toronto.edu/~kriz/cifar.html) dataset. One is a logistic regression classifier, while the other is a neural network classifier. The pre-processing steps are very simple:
 
@@ -10,7 +13,7 @@ This flattened greyscale version of the image is then fed into the classifiers.
 
 ## How to run
 
-To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AU-CDS/assignment2-image-classification-AddiH/blob/e7788a70969436bb3bcf8ed9157f8f0b98b4a5f6/setup.sh#L2) and [line 3](https://github.com/AU-CDS/assignment2-image-classification-AddiH/blob/e7788a70969436bb3bcf8ed9157f8f0b98b4a5f6/setup.sh#L3). Additionally, pip is upgraded in [line 12](https://github.com/AU-CDS/assignment2-image-classification-AddiH/blob/e7788a70969436bb3bcf8ed9157f8f0b98b4a5f6/setup.sh#L12). Remember to modify this to suit your needs.
+To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AddiH/Cultural_Data_Science/blob/c86070b44997c7cd31a8769524f3c6ff93b72a52/Visual/02_image_classification/setup.sh#L2) and [line 3](https://github.com/AddiH/Cultural_Data_Science/blob/c86070b44997c7cd31a8769524f3c6ff93b72a52/Visual/02_image_classification/setup.sh#L3). Additionally, pip is upgraded in [line 12](https://github.com/AddiH/Cultural_Data_Science/blob/c86070b44997c7cd31a8769524f3c6ff93b72a52/Visual/02_image_classification/setup.sh#L12). Remember to modify this to suit your needs.
 
 Clone the repository to your computer, and in the terminal navigate to this repository and run the following:
 ```
