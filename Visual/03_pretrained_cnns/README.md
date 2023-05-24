@@ -8,7 +8,7 @@ The makers of the indofashion dataset were able to achieve [88.43% classificatio
 
 ## How to run
 
-To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2]() and [line 3](). Additionally pip is upgraded in [line 12](). Remember to modify this to suit your needs.
+To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AddiH/Cultural_Data_Science/blob/e0a4d853a0c231647f1a4221e91bcace259dca7c/Visual/03_pretrained_cnns/setup.sh#L2) and [line 3](https://github.com/AddiH/Cultural_Data_Science/blob/e0a4d853a0c231647f1a4221e91bcace259dca7c/Visual/03_pretrained_cnns/setup.sh#L3). Additionally pip is upgraded in [line 12](https://github.com/AddiH/Cultural_Data_Science/blob/e0a4d853a0c231647f1a4221e91bcace259dca7c/Visual/03_pretrained_cnns/setup.sh#L12). Remember to modify this to suit your needs.
 
 ### Get kaggle datasets
 This code downloads data through the kaggle API. You need to sign up to [kaggle.com](https://www.kaggle.com/) and though your account, download your personal token - a json file. If you are unsure of how to do this, you can read kaggle's description below:
@@ -60,7 +60,7 @@ Saves your model to results/model, as well as a classification report and histor
 
 ## Customising
 If you want to try out different model parameters, you have a couple options. 
-- The train.py script has a couple options to change the model and training process. However, this should all be done through [run.sh](https://github.com/AU-CDS/assignment3-pretrained-cnns-AddiH/blob/main/run.sh) with flags, to ensure the code is run in the correct environment. You can can checkout [line 8 of run.sh](https://github.com/AU-CDS/assignment3-pretrained-cnns-AddiH/blob/ad666ac63ca53d02099559fa631eea4a7398e06a/run.sh#L8) for an example of how to use the flags.
+- The train.py script has a couple options to change the model and training process. However, this should all be done through [run.sh](https://github.com/AddiH/Cultural_Data_Science/blob/main/Visual/03_pretrained_cnns/run.sh) with flags, to ensure the code is run in the correct environment. You can can checkout [line 8 of run.sh](https://github.com/AddiH/Cultural_Data_Science/blob/e0a4d853a0c231647f1a4221e91bcace259dca7c/Visual/03_pretrained_cnns/run.sh#L8) for an example of how to use the flags.
 
 Remember: you only need to run setup.sh once, but you can execute run.sh as many times as you wish, customising the code to find the best model. 
 
