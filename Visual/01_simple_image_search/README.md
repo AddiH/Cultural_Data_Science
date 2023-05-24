@@ -1,4 +1,5 @@
 # Simple image search using colour histograms
+*Available at : https://github.com/AddiH/Cultural_Data_Science/tree/main/Visual/01_simple_image_search*
 ## Intro
 Welcome to this repository for the Image Search Algorithm assignment. Here, you will find my implementation of a simple image search algorithm using OpenCV.
 The dataset used in this assignment comprises over 1000 images of flowers, representing 17 different species. These images were sourced from the Visual Geometry Group at the University of Oxford, providing a diverse collection to work with. You can find more information on the dataset [here](https://www.robots.ox.ac.uk/~vgg/data/flowers/17/).
@@ -8,7 +9,7 @@ The algorithm finds the 5 most similar images to a target image using the functi
 
 
 ## How to run
-To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AU-CDS/assignment1-simple-image-search-AddiH/blob/8c44ca9eafe340f3657df0453cc4478bd574ff90/setup.sh#L2) and [line 3](https://github.com/AU-CDS/assignment1-simple-image-search-AddiH/blob/8c44ca9eafe340f3657df0453cc4478bd574ff90/setup.sh#L3). Additionally, pip is upgraded in [line 12](https://github.com/AU-CDS/assignment1-simple-image-search-AddiH/blob/8c44ca9eafe340f3657df0453cc4478bd574ff90/setup.sh#L12). Remember to modify this to suit your needs.
+To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AddiH/Cultural_Data_Science/blob/dd45d496850798ac8a94a7ad420cda52ec44b1ea/Visual/01_simple_image_search/setup.sh#L2) and [line 3](https://github.com/AddiH/Cultural_Data_Science/blob/dd45d496850798ac8a94a7ad420cda52ec44b1ea/Visual/01_simple_image_search/setup.sh#L3). Additionally, pip is upgraded in [line 12](https://github.com/AddiH/Cultural_Data_Science/blob/dd45d496850798ac8a94a7ad420cda52ec44b1ea/Visual/01_simple_image_search/setup.sh#L12). Remember to modify this to suit your needs.
 
 
 
