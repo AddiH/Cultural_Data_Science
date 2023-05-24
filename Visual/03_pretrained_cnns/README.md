@@ -1,5 +1,7 @@
 # Transfer learning using pretrained CNNs
 
+*Available at: https://github.com/AddiH/Cultural_Data_Science/tree/main/Visual/03_pretrained_cnns*
+
 ## Intro
 
 While the previous repository of this exam equipped feature extraction by simply flattening a grayscale image, this project showcases how a convolutional neural network (CNN) can be used to extract features from an RGB image. The CNN chosen is VGG16, the best model for Visual Recognition in 2014. While newer, larger and more sophisticated CNNs can outperform VGG16, it is still a great model to use for a project like this. 
