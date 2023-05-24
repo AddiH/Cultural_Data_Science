@@ -1,4 +1,4 @@
-# Pokémon type classification'
+# Pokémon type classification
 
 *Available at: https://github.com/AddiH/Cultural_Data_Science/tree/main/Visual/04_pokemon_classification*
 
