@@ -13,7 +13,7 @@ Now, I must confess that I have some grievances with the superhero industry. The
 
 ## How to run
 
-To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2]() and [line 3](). Additionally pip is upgraded in [line 12](). Remember to modify this to suit your needs.
+To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AddiH/Cultural_Data_Science/blob/351cab1f6045708ee970926d8a3c1ad787f970d4/Language/05_superheroes/setup.sh#L2) and [line 3](https://github.com/AddiH/Cultural_Data_Science/blob/351cab1f6045708ee970926d8a3c1ad787f970d4/Language/05_superheroes/setup.sh#L3). Additionally pip is upgraded in [line 12](https://github.com/AddiH/Cultural_Data_Science/blob/351cab1f6045708ee970926d8a3c1ad787f970d4/Language/05_superheroes/setup.sh#L12). Remember to modify this to suit your needs.
 
 ### Get kaggle datasets
 This code downloads data through the kaggle API. You need to sign up to [kaggle.com](https://www.kaggle.com/) and though your account, download your personal token - a json file. If you are unsure of how to do this, you can read kaggle's description below:
@@ -61,7 +61,7 @@ In plots you will find a bar plot showing emotion probabilities for individual s
 ```
 
 ## Customising
-The script plot_a_super.py can be run with a --name flag, and produces a barplot with the most likely emotions of the hero's backstory. Look through the "name" column of the emotions.csv to find the name of your favourite hero. Note: You just need to run the get_emotion.py script once, so modify the run.sh by commenting out [line 5]() if you want plots for multiple heroes.
+The script plot_a_super.py can be run with a --name flag, and produces a barplot with the most likely emotions of the hero's backstory. Look through the "name" column of the emotions.csv to find the name of your favourite hero. Note: You just need to run the get_emotion.py script once, so modify the run.sh by commenting out [line 5](https://github.com/AddiH/Cultural_Data_Science/blob/351cab1f6045708ee970926d8a3c1ad787f970d4/Language/05_superheroes/run.sh#L5) if you want plots for multiple heroes.
 
 ## Evaluation
 Lets have a look at the most probable emotions of Catwomans backstory:
