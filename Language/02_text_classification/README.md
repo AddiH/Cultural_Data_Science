@@ -5,7 +5,7 @@ After you have run the code, you will find the trained models in models/ and cla
 
 ## How to run
 
-To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2]() and [line 3](). Additionally pip is upgraded in [line 12](). Remember to modify this to suit your needs.
+To run the code within this repository, you first have to setup a virtual environment containing all the necessary modules. I have provided a script that does this for you, and all you need on your computer beforehand is [pip](https://pypi.org/project/pip/) and [python](https://www.python.org/). The code was developed on ubuntu Debian GNU/Linux 11 (bullseye) with python 3.9.2 and pip 23.1.2. The computer did not have venv although it is a default part of python, so it is installed in setup.sh [line 2](https://github.com/AddiH/Cultural_Data_Science/blob/9f2ce08494f4c0e82f9f51a3f6208d7c348ec50c/Language/02_text_classification/setup.sh#L2) and [line 3](https://github.com/AddiH/Cultural_Data_Science/blob/9f2ce08494f4c0e82f9f51a3f6208d7c348ec50c/Language/02_text_classification/setup.sh#L3). Additionally pip is upgraded in [line 12](https://github.com/AddiH/Cultural_Data_Science/blob/9f2ce08494f4c0e82f9f51a3f6208d7c348ec50c/Language/02_text_classification/setup.sh#L12). Remember to modify this to suit your needs.
 
 ### Execute the code
 
