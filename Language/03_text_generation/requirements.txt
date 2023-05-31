@@ -1,0 +1,4 @@
+numpy==1.23.5
+pandas==2.0.1
+tensorflow_cpu==2.12.0
+kaggle==1.5.13

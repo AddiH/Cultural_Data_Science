@@ -1,0 +1,6 @@
+transformers==4.29.2
+kaggle==1.5.13
+pandas==2.0.1
+tqdm==4.65.0
+tensorflow==2.12.0
+matplotlib==3.7.1
