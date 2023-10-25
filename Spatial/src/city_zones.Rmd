@@ -1,0 +1,78 @@
+---
+title: "byzone"
+author: "Astrid Elmann Hansen"
+date: '2023-08-05'
+output: html_document
+---
+This file finds the city zones in Aarhus municipality based on data from https://kort.plandata.dk/spatialmap.
+
+```{r}
+# loas pacakges
+pacman::p_load("sf", "tidyverse", "leaflet", "mapboxapi")
+```
+
+```{r}
+# load data
+df <- read_csv2("../data/in/byzoner.csv")
+```
+
+```{r}
+# drop sommerhus-zoner
+df <- df %>% 
+  filter(zone == 1)
+```
+
+```{r}
+# ensure only correct data is in the df. There should only be one unique value in each collumn
+unique(df$komnr)
+unique(df$objektkode)
+unique(df$zone)
+```
+
+```{r}
+# Get the oldest and newest datapoint to report range
+min(df$datoopdt)
+max(df$datoopdt)
+```
+
+```{r}
+# Turn column into sf object
+geometry <- st_as_sfc(df$shape_wkt)
+# Set the current crs
+st_crs(geometry) <- 25832
+# Transform to leaflet/mapbox crs
+geometry <- st_transform(geometry, crs = 4326)
+```
+
+```{r}
+# make a new df to save data
+save <- tibble(planid = df$planid)
+save$geometry <- geometry
+# write the file
+# st_write(save, "../data/multipolygons/city_zone/byzone_aarhus.shp")
+```
+
+```{r}
+# check that it plots correctly
+load <- read_sf("../data/multipolygons/city_zone/byzone_aarhus.shp")
+kommune <- read_sf("../data/multipolygons/municipality_border/kommune_border.shp")
+
+# Plot map
+leaflet() %>%
+  addMapboxTiles(style_id = "outdoors-v11", username = "mapbox") %>% 
+  addPolygons(
+    data = load$geometry, 
+    color = "red",
+    fillColor = "red",
+    fillOpacity = 0.5, 
+    opacity = 0.5, 
+    weight = 0.2)%>% 
+  addPolygons(data = kommune, color = "black", weight = 2, fill = FALSE)%>% 
+   addLegend(colors = c("red", "black"),
+            labels = c("City Zone", "Municipal border"),
+            opacity = 0.5,
+            position = "bottomright")
+
+```
+
+

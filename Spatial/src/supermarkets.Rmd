@@ -1,0 +1,109 @@
+---
+title: "super"
+author: "Astrid Elmann Hansen"
+date: '2023-08-06'
+output: html_document
+---
+This file extract coordinates from google maps coordinates. Then isochrones are calculated and a multipolygon saved.
+
+```{r}
+pacman::p_load("tidyverse", "sf", "leaflet", "mapboxapi")
+```
+
+```{r}
+df <- read_csv2("../data/in/supermarkets.csv") 
+```
+
+```{r}
+find_lat <- function(string){
+  lat <- str_match(string, "!8m2!3d(.*?)!4d")[2]
+  return(as.numeric(lat))
+}
+
+find_lng <- function(string){
+  lng <- str_match(string, "!4d(.*?)!")[2]
+  return(as.numeric(lng))
+}
+```
+
+```{r}
+df$lat <- sapply(df$url, find_lat)
+df$lng <- sapply(df$url, find_lng)
+```
+
+```{r}
+# remove duplicates
+df <- df[!duplicated(df[, c("lng", "lat")]),]
+```
+
+```{r}
+# turn into sf object
+points <- st_as_sf(df, coords = c("lng", "lat"), crs = 4326)
+```
+
+```{r}
+# remove points not in aarhus kommune
+kommune <- read_sf("../data/multipolygons/municipality_border/kommune_border.shp")
+outsiders <- st_difference(points, kommune)
+insiders <- st_intersection(points, kommune)
+```
+
+```{r}
+# Look at the map
+leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(data=outsiders$geometry, popup = "outside") %>%
+  addPolygons(data = kommune, color = "black", weight = 2, fill = FALSE)
+```
+
+
+```{r}
+# looking at map
+leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(data = insiders$geometry) %>% 
+  addPolygons(data = kommune, color = "black", weight = 2, fill = FALSE)
+```
+
+```{r}
+# # calculating isos (api)
+# walking_isos <- mb_isochrone(
+#   insiders,
+#   profile = "walking",
+#   time = 15,
+#   id = "url"
+# )
+```
+
+```{r}
+# write_sf(walking_isos, "../data/isochrones/supermarkets_isos.shp")
+```
+
+```{r}
+super_isos <- read_sf("../data/isochrones/supermarkets_isos.shp")
+multipolygon <- st_union(super_isos$geometry) # union all poygons to one area
+write_sf(multipolygon, "../data/multipolygons/supermarkets/market.shp")
+```
+
+```{r}
+# examining where i might have missed a supermarket
+polygons <- read_sf("../data/multipolygons/supermarkets/market.shp")
+byzone <- read_sf("../data/multipolygons/city_zone/byzone_aarhus.shp")
+
+leaflet() %>%
+  addMapboxTiles(style_id = "outdoors-v11",
+                 username = "mapbox") %>%
+  addPolygons(data = polygons, 
+              color = c("blue"),
+              fillColor = c("blue"),
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2) %>% 
+    addPolygons(data = byzone, 
+              color = c("red"),
+              fillColor = c("red"),
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2)
+```
+

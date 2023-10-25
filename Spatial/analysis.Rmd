@@ -1,0 +1,151 @@
+---
+title: "MAPS"
+author: "Astrid Elmann Hansen - 202006712"
+date: '2023-08-06'
+output: html_document
+---
+This file contains the main analysis of the project, including two interactive maps, visualising the results
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(include = FALSE)
+````
+
+```{r}
+pacman::p_load("sf", "mapboxapi", "leaflet", "tidyverse")
+```
+
+```{r}
+city_zone <- read_sf("data/multipolygons/city_zone/byzone_aarhus.shp")
+muni_border <- read_sf("data/multipolygons/municipality_border/kommune_border.shp")
+doc <- read_sf("data/multipolygons/doctors/doctors.shp")
+day <- read_sf("data/multipolygons/daycares/daycare.shp")
+super <- read_sf("data/multipolygons/supermarkets/market.shp")
+```
+
+```{r}
+# fix validity
+day <- st_make_valid(day)
+doc <- st_make_valid(doc)
+super <- st_make_valid(super)
+city_zone <- st_make_valid(city_zone)
+
+# double check crs
+st_crs(day)
+st_crs(doc)
+st_crs(super)
+st_crs(city_zone)
+```
+
+```{r}
+intersect <- st_intersection(doc, day)
+intersect <- st_intersection(intersect, super)
+min15 <- st_intersection(intersect, city_zone)
+```
+
+```{r}
+day_in_city <- st_intersection(day, city_zone)
+doc_in_city <- st_intersection(doc, city_zone)
+super_in_city <- st_intersection(super, city_zone)
+```
+
+
+```{r, echo=FALSE, include = TRUE}
+leaflet() %>%
+  addMapboxTiles(style_id = "outdoors-v11",
+                 username = "mapbox") %>%
+    addPolygons(data = city_zone, 
+              color = "red",
+              fillColor = "red",
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2,
+              group = "City zone") %>%
+  addPolygons(data = min15, 
+              color = "yellow",
+              fillColor = "yellow",
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2,
+              group = "15 minute city") %>%
+   addPolygons(data = muni_border, color = "black", weight = 2, fill = FALSE) %>% 
+  addLayersControl(overlayGroups = c("15 minute city", "City zone"),
+                   options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(colors = c("yellow", "red", "black"),
+            labels = c("15 minute city", "City zone", "Municipal border"),
+            opacity = 0.5,
+            position = "bottomright")
+```
+
+```{r, echo=FALSE, include = TRUE}
+leaflet() %>%
+  addMapboxTiles(style_id = "outdoors-v11",
+                 username = "mapbox") %>%
+    addPolygons(data = city_zone, 
+              color = "red",
+              fillColor = "red",
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2,
+              group = "City zone") %>%
+    addPolygons(data = super, 
+              color = "blue",
+              fillColor = "blue",
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2,
+              group = "Supermarkets") %>%
+  addPolygons(data = day, 
+              color = "purple",
+              fillColor = "purple",
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2,
+              group = "Daycares") %>%
+  addPolygons(data = doc, 
+              color = "#ff69b4",
+              fillColor = "#ff69b4",
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2,
+              group = "Doctors") %>%
+    addPolygons(data = min15, 
+              color = "yellow",
+              fillColor = "yellow",
+              fillOpacity = 0.7, 
+              opacity = 0.7, 
+              weight = 0.2,
+              group = "15 minute city") %>%
+  addPolygons(data = muni_border, color = "black", weight = 2, fill = FALSE) %>% 
+  addLayersControl(overlayGroups = c("15 minute city", "City zone", "Supermarkets", "Daycares", "Doctors"),
+                   options = layersControlOptions(collapsed = FALSE)) %>%
+  addLegend(colors = c("yellow", "red", "blue", "purple", "#ff69b4", "black"),
+            labels = c("15 minute city", "City zone", "Supermarkets", "Daycares", "Doctors", "Municipal border"),
+            opacity = 0.5,
+            position = "bottomright")
+
+
+```
+
+```{r, echo=FALSE, include = TRUE}
+# calculating what percentage of cityzone is covered by different ammeneties
+muni_area <- as.double(sum(st_area(muni_border)))
+city_zone_area <- as.double(sum(st_area(city_zone)))
+min15_area <- as.double(sum(st_area(min15)))
+day_area <- as.double(sum(st_area(day_in_city)))
+doc_area <- as.double(sum(st_area(doc_in_city)))
+super_area <- as.double(sum(st_area(super_in_city)))
+
+title <- c("Municipality", "City zone", "15 minute", "Daycares", "Doctors", "Supermarkets")
+areas <- c(muni_area, city_zone_area, min15_area, day_area, doc_area, super_area)
+per_of_city <- c(round(muni_area/city_zone_area, 2), 
+                 round(city_zone_area/city_zone_area,2), 
+                 round(min15_area/city_zone_area,2), 
+                 round(day_area/city_zone_area,2), 
+                 round(doc_area/city_zone_area,2), 
+                 round(super_area/city_zone_area,2))
+
+sizes <- tibble(area = title,
+                percentage_of_city_zone = per_of_city)
+sizes
+```
+

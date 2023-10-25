@@ -1,0 +1,141 @@
+---
+title: "børnehaver"
+author: "Astrid Elmann Hansen"
+date: '2023-08-06'
+output: html_document
+---
+
+This file extracts the coordinates for kindergartens. Unfortunately the coordinates did not include a . separating decimal numbers. Luckily I know that all coordinates should begin with 56, 9 or 10, as the area of Aarhus municipality is relatively small. With the coordinates extracted a 15 minute isochrone is calculated around all points.
+
+
+```{r}
+# Loading packages
+pacman::p_load("tidyverse", "opencage", "sf", "mapboxapi", "leaflet")
+```
+
+```{r}
+# loading data
+daycare <- read_csv2("../data/in/Anvisningsenheder.csv")
+# filtering
+daycare <- daycare %>% 
+  filter(instType3 == 6011 | instType3 == 6012 | instType3 == 6014) %>% #institutions accepting 3-5 yr childre
+  filter(kommuneKode == 751) # Aarhus municipality 
+```
+
+```{r}
+# Check whether daycares are duplicated
+any(duplicated(daycare$anvisningsenhedsNavn))
+```
+
+```{r}
+# Function to convert latitude and longitude strings to proper format
+convert_coordinates <- function(coord) {
+  # If it starts with "56", add a dot after the second digit
+  if (str_sub(coord, 1, 2) == "56") {
+    coord <- paste0(str_sub(coord, 1, 2), ".", str_sub(coord, 3, str_length(coord)))
+  }
+  # If it starts with "9" add a dot after the first
+  else if (str_sub(coord, 1, 1) == "9") {
+    coord <- paste0(str_sub(coord, 1, 1), ".", str_sub(coord, 2, str_length(coord)))
+  }
+    # If it starts with "10", add a dot after the second digit
+  else if (str_sub(coord, 1, 2) == "10") {
+    coord <- paste0(str_sub(coord, 1, 2), ".", str_sub(coord, 3, str_length(coord)))
+  }
+  # If not starting with "56", "9", or "10"
+  else {
+    print(paste0("Error:", coord))
+  }
+  return(coord)
+}
+```
+
+```{r}
+# Apply the function to the latitude and longitude columns
+daycare$geoBredde <- sapply(daycare$geoBredde, convert_coordinates)
+daycare$geoLaengde <- sapply(daycare$geoLaengde, convert_coordinates)
+
+# transform to numeric
+daycare$geoBredde <- as.numeric(daycare$geoBredde)
+daycare$geoLaengde <- as.numeric(daycare$geoLaengde)
+```
+
+```{r}
+# save the results
+daycare %>% 
+  select(anvisningsenhedsNavn, geoBredde, geoLaengde) %>% 
+  write_csv("../data/in/coords_daycare.csv")
+```
+
+```{r}
+# removing the variable to ensure we're working with the file
+rm(daycare)
+```
+
+```{r}
+kommune <- read_sf("../data/multipolygons/municipality_border/kommune_border.shp") # border of aarhus municipality 
+daycare <- read_csv("../data/in/coords_daycare.csv") # coordinates of daycares
+
+# visualise for sanity check
+leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(daycare$geoLaengde, daycare$geoBredde, popup = daycare$anvisningsenhedsNavn) %>% 
+  addPolygons(data = kommune, color = "black", weight = 2, fill = FALSE)
+```
+
+```{r}
+# turn into sf object
+day_sf <- st_as_sf(daycare, coords = c("geoLaengde", "geoBredde"), crs = 4326)
+```
+
+```{r}
+# # getting isochrones for every point, this part spends api calls
+
+# walking_isos <- mb_isochrone(
+#   day_sf,
+#   profile = "walking",
+#   time = 15,
+#   id = "anvisningsenhedsNavn"
+# )
+
+# #save the result
+# write_sf(walking_isos, "../data/isochrones/day_isos.shp")
+```
+
+```{r}
+# take a look
+day_isos <- read_sf("../data/isochrones/day_isos.shp")
+
+leaflet() %>%
+  addMapboxTiles(style_id = "outdoors-v11",
+                 username = "mapbox") %>%
+  addPolygons(data = day_isos, 
+              color = c("purple"),
+              fillColor = c("purple"),
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2) 
+```
+
+```{r}
+# union the isochrones to one multipolygon
+multipolygon <- st_union(day_isos$geometry)
+# save result
+write_sf(multipolygon, "../data/multipolygons/daycares/daycare.shp")
+```
+
+```{r}
+# see the result
+multipolygon <- read_sf("../data/multipolygons/daycares/daycare.shp")
+
+leaflet() %>%
+  addMapboxTiles(style_id = "outdoors-v11",
+                 username = "mapbox") %>%
+  addPolygons(data = multipolygon, 
+              color = c("purple"),
+              fillColor = c("purple"),
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2) 
+```
+

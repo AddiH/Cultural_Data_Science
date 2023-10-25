@@ -1,0 +1,150 @@
+---
+title: "læger"
+author: "Astrid Elmann Hansen"
+date: '2023-08-05'
+output: html_document
+---
+
+This file finds the coordinates for all doctors in Aarhus municipality and calculates a 15 minute walk isochrone around them.
+
+```{r}
+pacman::p_load("tidyverse", "opencage", "sf", "leaflet", "mapboxapi")
+Sys.setenv(OPENCAGE_KEY = "90111a11c10f47948b6f474e586599a2")
+```
+
+```{r}
+# read the data
+df <- read_csv2("../data/in/Behandlingsstedsregister.csv")
+```
+
+```{r}
+# choose only aarhus municipality and general practitioners 
+df <- df %>% 
+  filter(`Besøgsadresse kommune` == "Aarhus") %>% # aarhus municipality
+  filter(Enhedstype == "Almen lægepraksis") %>% # general practicioners
+  drop_na(Besøgsadresse) # drop doctors without addresses
+```
+
+```{r}
+# check whether besøgsadresse and aktivitetsadresse are identical
+identical(df$Besøgsadresse, df$Aktivitetsadresse)
+```
+
+```{r}
+# keep only columns with relevant info
+df <- tibble(cvr = df$`CVR-nummer`,
+            address = df$Besøgsadresse)
+```
+
+```{r}
+# remove information on which floor the doctor is located to get better geocoding
+df <- df %>%
+  mutate(clean_address = str_replace_all(address, ",[^,]+,", ","))
+```
+
+```{r}
+# get coordinates - api
+geocode <- oc_forward_df(data = df, placename = clean_address, countrycode = "DK", language = "da")
+```
+
+```{r}
+# find the succes and failed geocodes
+geo_success <- geocode %>% 
+  drop_na(oc_lat)
+
+geo_fail <- geocode %>% 
+  filter(is.na(oc_lat))
+```
+
+```{r}
+# one fail, have to look it up
+geo_success$oc_formatted[74]
+geo_success$oc_lat[74] <- 56.1465327
+geo_success$oc_lng[74] <- 10.2050873
+
+any(duplicated(geo_success$cvr))
+
+geo_success %>% 
+  select(cvr, oc_lat, oc_lng) %>% 
+  write_csv("../data/in/doc_coords.csv")
+```
+
+```{r}
+kommune <- read_sf("../data/multipolygons/municipality_border/kommune_border.shp")
+doc <- read_csv("../data/in/doc_coords.csv")
+
+# Look at the map
+leaflet() %>% 
+  addTiles() %>% 
+  addMarkers(doc$oc_lng, doc$oc_lat, popup = as.character(doc$cvr)) %>% 
+  addPolygons(data = kommune, color = "black", weight = 2, fill = FALSE)%>% 
+   addLegend(colors = c("black"),
+            labels = c("Municipal border"),
+            opacity = 0.5,
+            position = "bottomright")
+
+```
+
+```{r}
+#turn into sf object
+doc_sf <- st_as_sf(doc, coords = c("oc_lng", "oc_lat"), crs = 4326)
+```
+
+```{r}
+# # get the isochrones, uses api
+# walking_isos <- mb_isochrone(
+#   doc_sf,
+#   profile = "walking",
+#   time = 15,
+#   id = "cvr"
+# )
+```
+
+```{r}
+# save the file an delete surplus files
+#write_sf(walking_isos, "../data/isochrones/doc_isos.shp")
+```
+
+```{r}
+doc <- read_sf("../data/isochrones/doc_isos.shp")
+leaflet() %>%
+  addMapboxTiles(style_id = "outdoors-v11",
+                 username = "mapbox") %>%
+  addPolygons(data = doc, 
+              color = c("#ff69b4"),
+              fillColor = c("#ff69b4"),
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2) %>% 
+  addPolygons(data = kommune, color = "black", weight = 2, fill = FALSE)%>% 
+   addLegend(colors = c("#ff69b4", "black"),
+            labels = c("Doctors", "Municipal border"),
+            opacity = 0.5,
+            position = "bottomright")
+```
+
+```{r}
+multipolygon <- st_union(doc$geometry)
+write_sf(multipolygon, "../data/multipolygons/doctors/doctors.shp")
+```
+
+```{r}
+polygons <- read_sf("../data/multipolygons/doctors/doctors.shp")
+
+leaflet() %>%
+  addMapboxTiles(style_id = "outdoors-v11",
+                 username = "mapbox") %>%
+  addPolygons(data = polygons, 
+              color = c("#ff69b4"),
+              fillColor = c("#ff69b4"),
+              fillOpacity = 0.5, 
+              opacity = 0.5, 
+              weight = 0.2) %>% 
+  addPolygons(data = kommune, color = "black", weight = 2, fill = FALSE) %>% 
+   addLegend(colors = c("#ff69b4", "black"),
+            labels = c("Doctors", "Municipal border"),
+            opacity = 0.5,
+            position = "bottomright")
+```
+
+
